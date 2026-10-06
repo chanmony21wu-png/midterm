@@ -1,0 +1,30 @@
+CREATE DATABASE IF NOT EXISTS bac_system CHARACTER SET utf8mb4;
+USE bac_system;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS students (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  student_code VARCHAR(20) NOT NULL UNIQUE,
+  name VARCHAR(100) NOT NULL,
+  gender ENUM('Male','Female') NOT NULL,
+  dob DATE NULL,
+  email VARCHAR(100) NULL,
+  phone VARCHAR(20) NULL,
+  track ENUM('Science','Social') NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS grades (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  student_id INT NOT NULL,
+  subject VARCHAR(50) NOT NULL,
+  score DECIMAL(5,2) NOT NULL,
+  UNIQUE KEY uq_student_subject (student_id, subject),
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+);
